@@ -8,8 +8,9 @@ import { AccueilComponent } from './components/users/accueil/accueil.component';
 import { HeaderComponent } from './components/header/components/header/header.component';
 import { LoginComponent } from './components/admin/login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
+import { AuthInterceptor } from './guards/auth.interceptor';
 
 
 @NgModule({
@@ -27,7 +28,13 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
      HttpClientModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
