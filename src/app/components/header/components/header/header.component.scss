@@ -1,47 +1,83 @@
-header {
-  position: relative;
-  width: 100%;
-  height: 70px;
-  background-color: #616161;
-  color: white;
+.header-container {
   display: flex;
+  justify-content: space-between;
   align-items: center;
-  justify-content: space-around;
-  
+  background-color: #e0e5ec;
+  padding: 1rem 2rem;
+  box-shadow: 5px 5px 15px #a3b1c6, -5px -5px 15px #ffffff;
+  position: relative;
 
-  nav {
-    display: flex;
-    align-items: center;
-    gap: 20px;
+  .logo img {
+    height: 50px;
+    cursor: pointer;
+  }
 
+  .nav-menu {
     ul {
       display: flex;
       list-style: none;
-      gap: 20px;
+      gap: 1rem;
 
-      button{
-        background: rgba(125, 125, 248, 0.808);
+      li button {
+        background: #e0e5ec;
         border: none;
-        color: black;
-        font: inherit;
-        cursor: pointer;
         padding: 10px 20px;
-        border-radius: 5px;
+        border-radius: 14px;
+        box-shadow: 3px 3px 6px #a3b1c6, -3px -3px 6px #ffffff;
+        cursor: pointer;
+        font-weight: 600;
+        transition: 0.3s;
 
         &:hover {
-          text-decoration: underline;
+          box-shadow: inset 3px 3px 6px #a3b1c6, inset -3px -3px 6px #ffffff;
         }
       }
     }
   }
 
-  .logo {
-    width: 50px;
-    border-radius: 10%;
+  .burger {
+    display: none;
+    flex-direction: column;
+    gap: 6px;
+    cursor: pointer;
 
-    img{
-        width: 100%;
-        border-radius: 100%;
+    span {
+      width: 25px;
+      height: 3px;
+      background-color: #333;
+      border-radius: 5px;
+    }
+  }
+
+  // Responsive styles
+  @media (max-width: 768px) {
+    .burger {
+      display: flex;
+    }
+
+    .nav-menu {
+      position: absolute;
+      top: 100%;
+      right: 0;
+      background-color: #e0e5ec;
+      width: 25%;
+      padding: 1rem 2rem;
+      transform: translateY(-200%);
+      transition: transform 0.3s ease-in-out;
+
+      ul {
+        flex-direction: column;
+        align-items: flex-start;
+
+        li {
+          width: 100%;
+          margin-bottom: 1rem;
+        }
+      }
+
+      &.open {
+        transform: translateY(0);
+      }
     }
   }
 }
