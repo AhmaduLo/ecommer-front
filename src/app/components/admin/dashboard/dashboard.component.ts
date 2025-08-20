@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { Product } from 'src/app/model/Product';
 import { ProductService } from 'src/app/service/product/product.service';
 
@@ -50,6 +51,10 @@ import { ProductService } from 'src/app/service/product/product.service';
 </div>
 
 
+<div class="btn-product">
+  <button (click)="viewAllProducts()">Voir tous les produits</button>
+</div>
+
   `,
   styleUrls: ['./dashboard.component.scss']
 })
@@ -58,9 +63,11 @@ export class DashboardComponent {
   productForm: FormGroup;
   message: string = '';
 
+
   constructor(
-    private fb: FormBuilder,
-    private productService: ProductService
+    private readonly fb: FormBuilder,
+    private readonly productService: ProductService,
+    private readonly router: Router
   ) {
     this.productForm = this.fb.group({
       name: ['', Validators.required],
@@ -109,5 +116,9 @@ export class DashboardComponent {
     } else {
       this.message = 'Formulaire invalide';
     }
+  }
+
+  viewAllProducts() {
+    this.router.navigate(['/admin/allProducts']);
   }
 }

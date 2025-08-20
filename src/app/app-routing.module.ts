@@ -4,6 +4,7 @@ import { AccueilComponent } from './components/users/accueil/accueil.component';
 import { LoginComponent } from './components/admin/login/login.component';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { AuthGuard } from './guards/auth.guard';
+import { AllProductsComponent } from './components/admin/all-products/all-products.component';
 
 
 const routes: Routes = [
@@ -18,6 +19,11 @@ const routes: Routes = [
   { 
     path: 'admin/dashboard', 
     component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  { 
+    path: 'admin/allProducts', 
+    component: AllProductsComponent,
     canActivate: [AuthGuard]
   }
 ];

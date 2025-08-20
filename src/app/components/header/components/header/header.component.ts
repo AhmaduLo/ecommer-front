@@ -22,6 +22,9 @@ import { AuthService } from 'src/app/service/services/auth.service';
     <nav [class.open]="isMenuOpen" class="nav-menu">
       <ul>
         <li>
+          <button (click)="navigateToHome()">Home</button>
+        </li>
+        <li>
           <button (click)="navigateBasedOnAuth()">
             {{ isLoggedIn ? 'Dashboard' : 'Login' }}
           </button>

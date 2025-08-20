@@ -11,6 +11,7 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { AuthInterceptor } from './guards/auth.interceptor';
+import { AllProductsComponent } from './components/admin/all-products/all-products.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { AuthInterceptor } from './guards/auth.interceptor';
     AccueilComponent,
     HeaderComponent,
     LoginComponent,
-    DashboardComponent
+    DashboardComponent,
+    AllProductsComponent
   ],
   imports: [
     BrowserModule,
