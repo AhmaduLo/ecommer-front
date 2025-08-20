@@ -16,3 +16,4 @@ export interface Product {
   imageUrls: string[];
   images: Image[];
 }
+

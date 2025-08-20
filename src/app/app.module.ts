@@ -7,7 +7,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { AccueilComponent } from './components/users/accueil/accueil.component';
 import { HeaderComponent } from './components/header/components/header/header.component';
 import { LoginComponent } from './components/admin/login/login.component';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { AuthInterceptor } from './guards/auth.interceptor';
@@ -28,6 +28,7 @@ import { AllProductsComponent } from './components/admin/all-products/all-produc
     BrowserModule,
     AppRoutingModule,
      HttpClientModule,
+     FormsModule,
     ReactiveFormsModule
   ],
   providers: [
