@@ -19,21 +19,24 @@ import { AuthService } from 'src/app/service/services/auth.service';
     </div>
 
     <!-- Menu -->
-    <nav [class.open]="isMenuOpen" class="nav-menu">
-      <ul>
-        <li>
-          <button (click)="navigateToHome()">Home</button>
-        </li>
-        <li>
-          <button (click)="navigateBasedOnAuth()">
-            {{ isLoggedIn ? 'Dashboard' : 'Login' }}
-          </button>
-        </li>
-        <li>
-          <button>Panier</button>
-        </li>
-      </ul>
-    </nav>
+   <nav [class.open]="isMenuOpen" class="nav-menu">
+  <ul>
+    <li>
+      <button (click)="navigateToHome()">Home</button>
+    </li>
+    <li>
+      <button (click)="navigateBasedOnAuth()">
+        {{ isLoggedIn ? 'Dashboard' : 'Login' }}
+      </button>
+    </li>
+    <li *ngIf="isLoggedIn">
+      <button (click)="logout()">Logout</button>
+    </li>
+    <li>
+      <button>Panier</button>
+    </li>
+  </ul>
+</nav>
   </header>
 </ng-container>
 
@@ -53,9 +56,19 @@ export class HeaderComponent {
     this.authService.getIsLoggedIn().subscribe(status => {
       this.isLoggedIn = status;
     });
+
+    // Vérifie manuellement si un token existe (si observable pas déclenché)
+    const token = localStorage.getItem('accessToken');
+    this.isLoggedIn = !!token;
   }
 
   navigateToHome() {
+    this.router.navigate(['/']);
+  }
+
+  logout() {
+    this.authService.logout();
+    this.isLoggedIn = false;
     this.router.navigate(['/']);
   }
 

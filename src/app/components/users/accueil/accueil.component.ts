@@ -81,7 +81,6 @@ export class AccueilComponent {
   loadProducts() {
     this.productService.getProducts().subscribe(
       (products: Product[]) => {
-        console.log("Produits récupérés:", products);
         this.products = products;
       },
       (error: any) => {
