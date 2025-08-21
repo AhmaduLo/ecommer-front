@@ -12,6 +12,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { AllProductsComponent } from './components/admin/all-products/all-products.component';
+import { PanierComponent } from './components/users/panier/panier.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { AllProductsComponent } from './components/admin/all-products/all-produc
     HeaderComponent,
     LoginComponent,
     DashboardComponent,
-    AllProductsComponent
+    AllProductsComponent,
+    PanierComponent
   ],
   imports: [
     BrowserModule,

@@ -33,7 +33,7 @@ import { AuthService } from 'src/app/service/services/auth.service';
       <button (click)="logout()">Logout</button>
     </li>
     <li>
-      <button>Panier</button>
+      <button (click)="goPanier()">Panier</button>
     </li>
   </ul>
 </nav>
@@ -47,12 +47,12 @@ export class HeaderComponent {
   isMenuOpen = false;
   isLoggedIn = false;
 
-   constructor(
+  constructor(
     private readonly router: Router,
     private readonly authService: AuthService
-  ) {}
+  ) { }
 
- ngOnInit(): void {
+  ngOnInit(): void {
     this.authService.getIsLoggedIn().subscribe(status => {
       this.isLoggedIn = status;
     });
@@ -82,5 +82,9 @@ export class HeaderComponent {
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  goPanier() {
+    this.router.navigate(['/panier']);
   }
 }

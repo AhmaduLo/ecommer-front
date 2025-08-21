@@ -1,6 +1,8 @@
 import { Component } from "@angular/core";
 import { Product } from "src/app/model/Product";
 import { ProductService } from "src/app/service/product/product.service";
+import { Router } from '@angular/router';
+import { PanierService } from "src/app/service/panier/panier.service";
 
 @Component({
   selector: "app-accueil",
@@ -23,7 +25,7 @@ import { ProductService } from "src/app/service/product/product.service";
         <h3>{{ product.name }}</h3>
         <p>{{ product.price | currency: 'EUR' }}</p>
         <div class="btn">
-          <button (click)="addToCart(product)">Ajouter au panier</button>
+          <button (click)="ajouterAuPanier(product.id)">Ajouter au panier</button>
           <button (click)="openModal(product)">Détails</button>
         </div>
       </div>
@@ -50,7 +52,7 @@ import { ProductService } from "src/app/service/product/product.service";
         <p class="description">{{ selectedProduct.description }}</p>
         <p class="stock">Stock disponible: {{ selectedProduct.stock }}</p>
         <button
-          (click)="addToCart(selectedProduct)"
+          (click)="ajouterAuPanier(selectedProduct.id)"
           [disabled]="selectedProduct.stock === 0"
         >
           {{
@@ -62,6 +64,11 @@ import { ProductService } from "src/app/service/product/product.service";
       </div>
     </div>
   </div>
+
+  <div *ngIf="ajoutMessage" class="info-message">
+  {{ ajoutMessage }}
+</div>
+
 </section>
 
   `,
@@ -71,8 +78,9 @@ export class AccueilComponent {
   products: Product[] = [];
   selectedProduct: Product | null = null;
   currentImageIndex = 0;
+  ajoutMessage: string | null = null;
 
-  constructor(private readonly productService: ProductService) { }
+  constructor(private readonly productService: ProductService, private readonly Router: Router, private readonly panierService: PanierService) { }
 
   ngOnInit() {
     this.loadProducts();
@@ -121,7 +129,11 @@ export class AccueilComponent {
     }
   }
 
-  addToCart(product: Product) {
-    console.log("Produit ajouté au panier:", product);
+  ajouterAuPanier(produitId: number) {
+    this.panierService.ajouterProduit(produitId);
+    this.ajoutMessage = 'Produit ajouté au panier 🛒 !';
+
+    // Effacer le message après 2 secondes
+    setTimeout(() => (this.ajoutMessage = null), 2000);
   }
 }
