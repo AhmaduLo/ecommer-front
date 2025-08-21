@@ -10,19 +10,17 @@ export class AuthService {
 
   private readonly apiUrl = 'http://localhost:8080/api/admin';
 
-  private isLoggedInSubject = new BehaviorSubject<boolean>(this.getToken() !== null);
+  private readonly isLoggedInSubject = new BehaviorSubject<boolean>(this.getToken() !== null);
 
   constructor(private readonly http: HttpClient) { }
 
   login(email: string, password: string): Observable<LoginResponse> {
-    console.log('Tentative de connexion avec:', { email });
 
     const loginRequest: LoginRequest = { email, password };
 
     return this.http.post<LoginResponse>(`${this.apiUrl}/login`, loginRequest)
       .pipe(
         tap((response: LoginResponse) => {
-          console.log('Réponse du serveur:', response);
           if (response?.token) {
             this.setToken(response.token);
           } else {
