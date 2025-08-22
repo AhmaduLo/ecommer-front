@@ -14,6 +14,7 @@ import { AuthInterceptor } from './guards/auth.interceptor';
 import { AllProductsComponent } from './components/admin/all-products/all-products.component';
 import { PanierComponent } from './components/users/panier/panier.component';
 import { PaiementComponent } from './components/users/paiement/paiement.component';
+import { ModalComponent } from './components/shared/modal/modal.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { PaiementComponent } from './components/users/paiement/paiement.componen
     DashboardComponent,
     AllProductsComponent,
     PanierComponent,
-    PaiementComponent
+    PaiementComponent,
+    ModalComponent
   ],
   imports: [
     BrowserModule,

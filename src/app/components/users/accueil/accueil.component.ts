@@ -3,6 +3,7 @@ import { Product } from "src/app/model/Product";
 import { ProductService } from "src/app/service/product/product.service";
 import { Router } from '@angular/router';
 import { PanierService } from "src/app/service/panier/panier.service";
+import { ModalService } from "src/app/service/modal/modal.service";
 
 @Component({
   selector: "app-accueil",
@@ -65,12 +66,8 @@ import { PanierService } from "src/app/service/panier/panier.service";
     </div>
   </div>
 
-  <div *ngIf="ajoutMessage" class="info-message">
-  {{ ajoutMessage }}
-</div>
-
 </section>
-
+<app-modal></app-modal>
   `,
   styleUrls: ["./accueil.component.scss"],
 })
@@ -78,9 +75,13 @@ export class AccueilComponent {
   products: Product[] = [];
   selectedProduct: Product | null = null;
   currentImageIndex = 0;
-  ajoutMessage: string | null = null;
 
-  constructor(private readonly productService: ProductService, private readonly Router: Router, private readonly panierService: PanierService) { }
+  constructor(
+    private readonly productService: ProductService, 
+    private readonly Router: Router, 
+    private readonly panierService: PanierService,
+    private readonly modalService: ModalService
+  ) { }
 
   ngOnInit() {
     this.loadProducts();
@@ -131,9 +132,6 @@ export class AccueilComponent {
 
   ajouterAuPanier(produitId: number) {
     this.panierService.ajouterProduit(produitId);
-    this.ajoutMessage = 'Produit ajouté au panier 🛒 !';
-
-    // Effacer le message après 2 secondes
-    setTimeout(() => (this.ajoutMessage = null), 2000);
+    this.modalService.showSuccess('Produit ajouté au panier 🛒 !');
   }
 }
