@@ -1,4 +1,5 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { Order, OrderItem } from "src/app/model/panier";
 import { Product } from "src/app/model/Product";
 import { PanierService } from "src/app/service/panier/panier.service";
@@ -92,8 +93,9 @@ export class PanierComponent {
 
   constructor(
     private readonly panierService: PanierService,
-    private productService: ProductService
-  ) {}
+    private readonly productService: ProductService,
+    private readonly router: Router
+  ) { }
 
   ngOnInit(): void {
     this.chargerProduits();
@@ -144,6 +146,8 @@ export class PanierComponent {
         alert('Commande enregistrée ! Token : ' + res.accessToken);
         this.panierService.viderPanier();
         this.chargerProduits();
+        this.panierService.setPaiementInfos(res.accessToken, res.totalPrice);
+        this.router.navigate(['/paiement']);
       },
       error: (err) => console.error(err)
     });

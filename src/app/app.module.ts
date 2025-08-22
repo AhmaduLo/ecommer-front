@@ -13,6 +13,7 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { AuthInterceptor } from './guards/auth.interceptor';
 import { AllProductsComponent } from './components/admin/all-products/all-products.component';
 import { PanierComponent } from './components/users/panier/panier.component';
+import { PaiementComponent } from './components/users/paiement/paiement.component';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import { PanierComponent } from './components/users/panier/panier.component';
     LoginComponent,
     DashboardComponent,
     AllProductsComponent,
-    PanierComponent
+    PanierComponent,
+    PaiementComponent
   ],
   imports: [
     BrowserModule,
