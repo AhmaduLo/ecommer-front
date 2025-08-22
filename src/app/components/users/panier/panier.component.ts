@@ -1,8 +1,12 @@
 import { Component } from "@angular/core";
-import { Order } from "src/app/model/panier";
+import { Order, OrderItem } from "src/app/model/panier";
 import { Product } from "src/app/model/Product";
 import { PanierService } from "src/app/service/panier/panier.service";
 import { ProductService } from "src/app/service/product/product.service";
+
+interface ProduitPanier extends Product {
+  quantity: number;
+}
 
 @Component({
   selector: "app-panier",
@@ -18,7 +22,13 @@ import { ProductService } from "src/app/service/product/product.service";
           </div>
           <div class="product-info">
             <h3 class="product-name">{{ produit.name }}</h3>
-            <p class="product-price">{{ produit.price | currency }}</p>
+            <p class="product-price">{{ produit.price | currency }} x {{ produit.quantity }}</p>
+            <p class="product-subtotal">Sous-total: {{ (produit.price * produit.quantity) | currency }}</p>
+          </div>
+          <div class="quantity-controls">
+            <button class="quantity-btn" (click)="diminuerQuantite(produit.id)">-</button>
+            <span class="quantity-display">{{ produit.quantity }}</span>
+            <button class="quantity-btn" (click)="augmenterQuantite(produit.id)">+</button>
           </div>
           <button class="remove-btn" (click)="retirerDuPanier(produit.id)">Supprimer</button>
         </div>
@@ -72,7 +82,7 @@ import { ProductService } from "src/app/service/product/product.service";
   styleUrls: ["./panier.component.scss"],
 })
 export class PanierComponent {
-  produits: Product[] = [];
+  produits: ProduitPanier[] = [];
   total = 0;
 
   fullName = '';
@@ -90,12 +100,30 @@ export class PanierComponent {
   }
 
   chargerProduits() {
-    const ids = this.panierService.getProduits();
+    const items = this.panierService.getItems();
     this.productService.getProducts().subscribe(allProducts => {
-      this.produits = allProducts.filter(p => ids.includes(p.id));
-      this.total = this.produits.reduce((s, p) => s + p.price, 0);
+      this.produits = items.map(item => {
+        const product = allProducts.find(p => p.id === item.productId);
+        return { ...product!, quantity: item.quantity };
+      }).filter(p => p);
+      this.total = this.produits.reduce((s, p) => s + (p.price * p.quantity), 0);
     });
   }
+
+  augmenterQuantite(id: number) {
+    const currentQuantity = this.panierService.obtenirQuantite(id);
+    this.panierService.modifierQuantite(id, currentQuantity + 1);
+    this.chargerProduits();
+  }
+
+  diminuerQuantite(id: number) {
+    const currentQuantity = this.panierService.obtenirQuantite(id);
+    if (currentQuantity > 1) {
+      this.panierService.modifierQuantite(id, currentQuantity - 1);
+      this.chargerProduits();
+    }
+  }
+
   retirerDuPanier(id: number) {
     this.panierService.retirerProduit(id);
     this.chargerProduits();
@@ -108,6 +136,7 @@ export class PanierComponent {
       phoneNumber: this.phoneNumber,
       address: this.address,
       productIds: this.produits.map(p => p.id),
+      items: this.produits.map(p => ({ productId: p.id, quantity: p.quantity }))
     };
 
     this.panierService.envoyerCommande(order).subscribe({

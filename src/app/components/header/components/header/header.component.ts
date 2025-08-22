@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/service/services/auth.service';
     </nav>
 
     <!-- Burger icon -->
-    <div class="burger" (click)="toggleMenu()">
+    <div class="burger" [class.active]="isMenuOpen" (click)="toggleMenu()">
       <span></span>
       <span></span>
       <span></span>
@@ -64,12 +64,14 @@ export class HeaderComponent {
 
   navigateToHome() {
     this.router.navigate(['/']);
+    this.closeMenu();
   }
 
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
     this.router.navigate(['/']);
+    this.closeMenu();
   }
 
   navigateBasedOnAuth() {
@@ -78,13 +80,19 @@ export class HeaderComponent {
     } else {
       this.router.navigate(['/login']);
     }
+    this.closeMenu();
   }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
   }
 
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
   goPanier() {
     this.router.navigate(['/panier']);
+    this.closeMenu();
   }
 }

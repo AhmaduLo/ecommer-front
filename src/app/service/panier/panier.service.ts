@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Order, OrderResponse } from 'src/app/model/panier';
+import { Order, OrderResponse, OrderItem } from 'src/app/model/panier';
 
 @Injectable({
   providedIn: 'root'
@@ -13,18 +13,55 @@ export class PanierService {
   constructor(private http: HttpClient) {}
 
   getProduits(): number[] {
+    const items = this.getItems();
+    return items.map(item => item.productId);
+  }
+
+  getItems(): OrderItem[] {
     return JSON.parse(localStorage.getItem(this.panierKey) || '[]');
   }
 
-  ajouterProduit(id: number) {
-    const produits = this.getProduits();
-    produits.push(id);
-    localStorage.setItem(this.panierKey, JSON.stringify(produits));
+  ajouterProduit(id: number, quantity: number = 1) {
+    const items = this.getItems();
+    const existingItem = items.find(item => item.productId === id);
+    
+    if (existingItem) {
+      existingItem.quantity += quantity;
+    } else {
+      items.push({ productId: id, quantity: quantity });
+    }
+    
+    localStorage.setItem(this.panierKey, JSON.stringify(items));
+  }
+
+  modifierQuantite(id: number, quantity: number) {
+    const items = this.getItems();
+    const item = items.find(item => item.productId === id);
+    
+    if (item) {
+      if (quantity <= 0) {
+        this.retirerProduit(id);
+      } else {
+        item.quantity = quantity;
+        localStorage.setItem(this.panierKey, JSON.stringify(items));
+      }
+    }
   }
 
   retirerProduit(id: number) {
-    let produits = this.getProduits().filter(pid => pid !== id);
-    localStorage.setItem(this.panierKey, JSON.stringify(produits));
+    let items = this.getItems().filter(item => item.productId !== id);
+    localStorage.setItem(this.panierKey, JSON.stringify(items));
+  }
+
+  obtenirQuantite(id: number): number {
+    const items = this.getItems();
+    const item = items.find(item => item.productId === id);
+    return item ? item.quantity : 0;
+  }
+
+  getNombreArticles(): number {
+    const items = this.getItems();
+    return items.reduce((total, item) => total + item.quantity, 0);
   }
 
   viderPanier() {
