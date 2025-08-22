@@ -12,7 +12,7 @@ import { AuthService } from 'src/app/service/services/auth.service';
     </nav>
 
     <!-- Burger icon -->
-    <div class="burger" (click)="toggleMenu()">
+    <div class="burger" [class.active]="isMenuOpen" (click)="toggleMenu()">
       <span></span>
       <span></span>
       <span></span>
@@ -33,7 +33,7 @@ import { AuthService } from 'src/app/service/services/auth.service';
       <button (click)="logout()">Logout</button>
     </li>
     <li>
-      <button>Panier</button>
+      <button (click)="goPanier()">Panier</button>
     </li>
   </ul>
 </nav>
@@ -47,12 +47,12 @@ export class HeaderComponent {
   isMenuOpen = false;
   isLoggedIn = false;
 
-   constructor(
+  constructor(
     private readonly router: Router,
     private readonly authService: AuthService
-  ) {}
+  ) { }
 
- ngOnInit(): void {
+  ngOnInit(): void {
     this.authService.getIsLoggedIn().subscribe(status => {
       this.isLoggedIn = status;
     });
@@ -64,12 +64,14 @@ export class HeaderComponent {
 
   navigateToHome() {
     this.router.navigate(['/']);
+    this.closeMenu();
   }
 
   logout() {
     this.authService.logout();
     this.isLoggedIn = false;
     this.router.navigate(['/']);
+    this.closeMenu();
   }
 
   navigateBasedOnAuth() {
@@ -78,9 +80,19 @@ export class HeaderComponent {
     } else {
       this.router.navigate(['/login']);
     }
+    this.closeMenu();
   }
 
   toggleMenu() {
     this.isMenuOpen = !this.isMenuOpen;
+  }
+
+  closeMenu() {
+    this.isMenuOpen = false;
+  }
+
+  goPanier() {
+    this.router.navigate(['/panier']);
+    this.closeMenu();
   }
 }
