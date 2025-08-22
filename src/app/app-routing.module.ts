@@ -6,6 +6,7 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { AuthGuard } from './guards/auth.guard';
 import { AllProductsComponent } from './components/admin/all-products/all-products.component';
 import { PanierComponent } from './components/users/panier/panier.component';
+import { PaiementComponent } from './components/users/paiement/paiement.component';
 
 
 const routes: Routes = [
@@ -13,7 +14,7 @@ const routes: Routes = [
     path: '',
     component: AccueilComponent
   },
-   {
+  {
     path: 'login',
     component: LoginComponent
   },
@@ -21,13 +22,17 @@ const routes: Routes = [
     path: 'panier',
     component: PanierComponent
   },
-  { 
-    path: 'admin/dashboard', 
+  {
+    path: 'paiement',
+    component: PaiementComponent
+  },
+  {
+    path: 'admin/dashboard',
     component: DashboardComponent,
     canActivate: [AuthGuard]
   },
-  { 
-    path: 'admin/allProducts', 
+  {
+    path: 'admin/allProducts',
     component: AllProductsComponent,
     canActivate: [AuthGuard]
   }

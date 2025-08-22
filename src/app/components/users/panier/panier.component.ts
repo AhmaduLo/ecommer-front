@@ -1,8 +1,10 @@
 import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 import { Order, OrderItem } from "src/app/model/panier";
 import { Product } from "src/app/model/Product";
 import { PanierService } from "src/app/service/panier/panier.service";
 import { ProductService } from "src/app/service/product/product.service";
+import { ModalService } from "src/app/service/modal/modal.service";
 
 interface ProduitPanier extends Product {
   quantity: number;
@@ -38,46 +40,11 @@ interface ProduitPanier extends Product {
         <p class="total-price">Total : {{ total | currency }}</p>
       </div>
 
-      <form class="checkout-form" (ngSubmit)="commander()" *ngIf="produits.length">
-        <div class="form-group">
-          <input
-            class="form-input"
-            [(ngModel)]="fullName"
-            name="fullName"
-            placeholder="Nom complet"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <input
-            class="form-input"
-            [(ngModel)]="userEmail"
-            name="userEmail"
-            placeholder="Email"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <input
-            class="form-input"
-            [(ngModel)]="phoneNumber"
-            name="phoneNumber"
-            placeholder="Téléphone"
-            required
-          />
-        </div>
-        <div class="form-group">
-          <input
-            class="form-input"
-            [(ngModel)]="address"
-            name="address"
-            placeholder="Adresse"
-            required
-          />
-        </div>
-        <button class="submit-btn" type="submit">Valider la commande</button>
-      </form>
+      <div class="checkout-actions" *ngIf="produits.length">
+        <button class="submit-btn" (click)="commander()">Procéder au paiement</button>
+      </div>
     </div>
+    <app-modal></app-modal>
   `,
   styleUrls: ["./panier.component.scss"],
 })
@@ -85,15 +52,12 @@ export class PanierComponent {
   produits: ProduitPanier[] = [];
   total = 0;
 
-  fullName = '';
-  userEmail = '';
-  phoneNumber = '';
-  address = '';
-
   constructor(
     private readonly panierService: PanierService,
-    private productService: ProductService
-  ) {}
+    private readonly productService: ProductService,
+    private readonly router: Router,
+    private readonly modalService: ModalService
+  ) { }
 
   ngOnInit(): void {
     this.chargerProduits();
@@ -130,22 +94,14 @@ export class PanierComponent {
   }
 
   commander() {
-    const order: Order = {
-      fullName: this.fullName,
-      userEmail: this.userEmail,
-      phoneNumber: this.phoneNumber,
-      address: this.address,
-      productIds: this.produits.map(p => p.id),
-      items: this.produits.map(p => ({ productId: p.id, quantity: p.quantity }))
-    };
-
-    this.panierService.envoyerCommande(order).subscribe({
-      next: (res) => {
-        alert('Commande enregistrée ! Token : ' + res.accessToken);
-        this.panierService.viderPanier();
-        this.chargerProduits();
-      },
-      error: (err) => console.error(err)
-    });
+    const itemsWithPrices = this.produits.map(p => ({
+      productId: p.id,
+      quantity: p.quantity,
+      price: p.price
+    }));
+    
+    // Stocker directement les infos dans localStorage sans enregistrer en BDD
+    this.panierService.setPaiementInfos('', this.total, {}, itemsWithPrices);
+    this.router.navigate(['/paiement']);
   }
 }
