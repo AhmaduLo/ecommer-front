@@ -1,27 +1,85 @@
-# Ecom
+# Shop E-Commerce
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.6.
+Une application de boutique en ligne moderne développée avec Angular.
 
-## Development server
+## À propos
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Cette application permet de :
+- Parcourir un catalogue de produits
+- Ajouter des articles au panier
+- Effectuer des paiements sécurisés avec Stripe
+- Gérer les produits depuis un espace administrateur
 
-## Code scaffolding
+## Prérequis
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Avant de commencer, assurez-vous d'avoir installé :
+- Node.js (version 14 ou supérieure)
+- npm (généralement installé avec Node.js)
 
-## Build
+## Installation
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+1. Clonez le projet sur votre ordinateur
+2. Ouvrez un terminal dans le dossier du projet
+3. Installez les dépendances :
+```bash
+npm install
+```
 
-## Running unit tests
+## Démarrage
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+Pour lancer l'application en mode développement :
 
-## Running end-to-end tests
+```bash
+npm start
+```
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Ensuite, ouvrez votre navigateur à l'adresse : `http://localhost:4200/`
 
-## Further help
+L'application se rechargera automatiquement si vous modifiez les fichiers.
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+## Fonctionnalités
+
+### Pour les utilisateurs
+- **Accueil** : Découvrez les produits disponibles
+- **Panier** : Ajoutez et gérez vos articles
+- **Paiement** : Finalisez vos achats en toute sécurité via Stripe
+
+### Pour les administrateurs
+- **Tableau de bord** : Vue d'ensemble de la boutique
+- **Gestion des produits** : Ajoutez, modifiez ou supprimez des produits
+- **Connexion sécurisée** : Accès protégé à l'espace admin
+
+## Technologies utilisées
+
+- **Angular 16** : Framework principal
+- **Stripe** : Solution de paiement sécurisé
+- **TypeScript** : Langage de programmation
+- **SCSS** : Stylisation de l'interface
+
+## Structure du projet
+
+```
+src/
+├── app/
+│   ├── components/
+│   │   ├── admin/        # Espace administrateur
+│   │   ├── users/        # Espace client
+│   │   ├── header/       # En-tête du site
+│   │   ├── footer/       # Pied de page
+│   │   └── shared/       # Composants réutilisables
+│   └── ...
+```
+
+## Commandes utiles
+
+- `npm start` : Lancer le serveur de développement
+- `npm run build` : Créer une version de production
+- `npm test` : Lancer les tests
+
+## Support
+
+Pour toute question ou problème, n'hésitez pas à ouvrir une issue sur le repository.
+
+---
+
+Développé avec Angular
